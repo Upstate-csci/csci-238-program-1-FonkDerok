@@ -11,6 +11,7 @@
 #include <sstream>
 #include <iomanip>
 #include <fstream>
+#include <locale> 
 
 using namespace std;
 class Money
