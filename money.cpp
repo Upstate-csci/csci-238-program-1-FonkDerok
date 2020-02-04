@@ -6,7 +6,7 @@
 \*************************************************/
 #include "money.h"
 
-// All those numbers you type in? Confusing and unreadable. This output? In a string format an readable.
+// All those numbers you type in? Confusing and unreadable. This output? In a string format and readable.
 string Money::toString() {
     stringstream String;
     String << hundreds << " hundreds, " << tens << " tens, " << fives << " fives, " << ones << " ones, " << quarters << " quarters, " << dimes << " dimes, " << nickels << " nickels, " << cents << " pennies";
@@ -25,17 +25,19 @@ string Money::toCurrency(double amount) {
 // takes your confusing integers and crams them all together into a single number
 string Money::processChange() {
     cin >> hundreds >> tens >> fives >> ones >> quarters >> dimes >> nickels >> cents;
+    stringstream String;
 
     //forcefeeding the denominations into total hoping it doesn't explode
     total = hundreds * 100.0 + tens * 10.0 + fives * 5.0 + ones + quarters * 0.25 + dimes * 0.1 + nickels * 0.05 + cents * 0.01;
-    cout << toString() << " == " << toCurrency(total) << endl;
-    return "";
+    String << toString() << " == " << toCurrency(total) << endl;
+    return String.str();
 }
 
 // Wanna see the money stretched out in all the denominations? Give this thing a double
 string Money::processFloat() {
     cin >> total;
     double ammount = total;
+    stringstream String;
 
     //slicing and dicing ammount into denominations
     hundreds = ammount / 100;
@@ -60,17 +62,17 @@ string Money::processFloat() {
     if (total - ammount != 0)
         cents++;
 
-    cout << toCurrency(total) << " = " << toString() << endl;
+    String << toCurrency(total) << " = " << toString() << endl;
 
-    return "";
+    return String.str();
 }
 
-//Not fleshed out enough for extra credit, just made usable for sake of completion
+//You thought processFloat was cool? Give this a double and it's ALL words
 string Money::processCheck() {
     int dollars, change;
     int numbers [4];
     string words[4];
-    stringstream String;
+    stringstream String, otherString;
     cin >> total;
 
     //splitting up the dollars and change like a nasty divorce
@@ -85,8 +87,6 @@ string Money::processCheck() {
     numbers[3] = dollars / 10;
     dollars -= numbers[3]*10;
     numbers[2] = dollars;
-    for (int i = 0; i < 4; i++)
-        cout << numbers[i] << endl;
 
     //putting the right words in the word array to match the number array
     for (int i = 0; i < 3; i++)
@@ -219,8 +219,8 @@ string Money::processCheck() {
         String << words[2] << " ";
 
     //Voila, it works
-    cout << "Check for " << toCurrency(total) << " = " << String.str() << "dollars and " << change << " cents" << endl;
-    return "";
+    otherString << "Check for " << toCurrency(total) << " = " << String.str() << "dollars and " << change << " cents" << endl;
+    return otherString.str();
 }
 
 // Give this thing the money you got and the price for your wildest dreams (doubles) and it gives the denominations of the change
@@ -228,6 +228,7 @@ string Money::processChangeFloat() {
     double cost, change;
     cin >> total >> cost;
     change = total - cost;
+    stringstream String;
 
     //slicing and dicing change into denominations
     hundreds = change / 100;
@@ -252,8 +253,8 @@ string Money::processChangeFloat() {
     if ((total - cost) - change != 0)
         cents++;
 
-    cout << "Change back on " << toCurrency(total) << " for purchase of " << toCurrency(cost) << " is " << toCurrency(total - cost) << " which is " << toString() << endl;
-    return "";
+    String << "Change back on " << toCurrency(total) << " for purchase of " << toCurrency(cost) << " is " << toCurrency(total - cost) << " which is " << toString() << endl;
+    return String.str();
 }
 
 // Paying with cash? Want your change in denominations? This is the method for you
@@ -264,9 +265,10 @@ string Money::processChangeChange() {
     cin >> hundreds >> tens >> fives >> ones >> quarters >> dimes >> nickels >> cents >> cost;
     total = hundreds * 100.0 + tens * 10.0 + fives * 5.0 + ones + quarters * 0.25 + dimes * 0.1 + nickels * 0.05 + cents * 0.01;
     change = total - cost;
+    stringstream String;
 
     //getting the first output before we change all the values
-    cout << "Change back on " << toString() << " for purchase of " << toCurrency(cost) << " is " << toCurrency(change) << " which is ";
+    String << "Change back on " << toString() << " for purchase of " << toCurrency(cost) << " is " << toCurrency(change) << " which is ";
 
     //slicing and dicing change into denominations
     hundreds = change / 100;
@@ -296,7 +298,7 @@ string Money::processChangeChange() {
         cents--;
 
 
-    cout << toString() << endl;
-    return "";
+    String << toString() << endl;
+    return String.str();
 }
 //That's all, Folks
